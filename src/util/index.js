@@ -6,10 +6,31 @@ function includes(completeWord, shortWord) {
     return complete.indexOf(short) !== -1;
 }
 
-function containsNameOrType(word, pokemon) {
+function filterTypes(word, pokemon) {
     const types = [...pokemon.Types];
-    const filteredTypes = types.filter(type => includes(type, word))
+    return types.filter(type => includes(type, word))
+}
+
+function containsNameOrType(word, pokemon) {
+    const filteredTypes = filterTypes(word, pokemon);
     return includes(pokemon.Name,word) || filteredTypes.length > 0;
+}
+
+function containsNameAndType(word, pokemon) {
+    const filteredTypes = filterTypes(word, pokemon);
+    return includes(pokemon.Name,word) && filteredTypes.length > 0;
+}
+
+function sortByNameAndType(keyword, pokemonList) {
+    return pokemonList.sort((pokA, pokB) => {
+        if(containsNameAndType(keyword, pokB)){
+            return 1;
+        }
+        if(containsNameAndType(keyword, pokA)){
+            return -1;
+        }
+        return 0;
+    });
 }
 
 const util = {
@@ -18,7 +39,8 @@ const util = {
     },
     filterByNameOrType: (keyword, pokemonList) => {
         return pokemonList.filter(pokemon => containsNameOrType(keyword, pokemon));
-    }
+    },
+    sortByNameAndType: sortByNameAndType
 }
 
 export default util;
