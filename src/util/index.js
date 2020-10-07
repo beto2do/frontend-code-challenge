@@ -46,6 +46,16 @@ function sortByMaxCP(pokemonList) {
     });
 }
 
+function splitName(keyword, name) {
+    if(!keyword) {
+        return [name];
+    }
+    const separator = "******";
+    const regExp = new RegExp(keyword, 'i');
+    const replacedWord = name.replace(regExp, separator + keyword + separator);
+    return replacedWord.split(separator);
+}
+
 const util = {
     getPokemos: () => {
         return fetch(URL_PATH).then(response => response.json());
@@ -54,7 +64,8 @@ const util = {
         return pokemonList.filter(pokemon => containsNameOrType(keyword, pokemon));
     },
     sortByNameAndType: sortByNameAndType,
-    sortByMaxCP: sortByMaxCP
+    sortByMaxCP: sortByMaxCP,
+    splitName:splitName
 }
 
 export default util;

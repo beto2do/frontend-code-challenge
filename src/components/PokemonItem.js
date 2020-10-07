@@ -8,7 +8,7 @@ const PokemonItem = (props) => {
     return (
         <li>
             <img src={imgSrc} alt={props.name} />
-            <PokemonDetail name={props.name} types={props.types}/>
+            <PokemonDetail name={props.name} types={props.types} keyword={props.keyword}/>
         </li>
     );
 }

@@ -19,7 +19,10 @@ const PokemonController = (props) => {
         if(sortedPokemons.length > 4) {
             sortedPokemons = sortedPokemons.slice(0,4);
         }
-        props.onChange(sortedPokemons);
+        props.onChange({
+            pokemons: sortedPokemons,
+            keyword: keyword
+        });
     }
 
     function handleMaxCPToogle(event) {
