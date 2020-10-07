@@ -5,10 +5,12 @@ const PokemonController = (props) => {
 
     const [pokemons, setPokemons] = useState([]);
     const [isMaxCP, setIsMaxCP] = useState(false);
+    const [isLoading, setIsloading] = useState(true);
 
     useEffect(() => {
         util.getPokemos().then(data => {
             setPokemons(data);
+            setIsloading(false);
         });
     }, []);
 
@@ -29,6 +31,7 @@ const PokemonController = (props) => {
         setIsMaxCP(event.target.checked);
     }
 
+    const loader = isLoading ? <div className="loader"></div>: '';
     return <>
         <label htmlFor="maxCP" className="max-cp">
             <input type="checkbox" id="maxCP" onChange={handleMaxCPToogle}/>
@@ -37,7 +40,7 @@ const PokemonController = (props) => {
             </small>
         </label>
         <input type="text" className="input" placeholder="Pokemon or type" onChange={handleInputChange}/>
-        <div className="loader"></div>
+        {loader}
     </>;
 }
 
