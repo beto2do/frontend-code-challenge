@@ -3,11 +3,23 @@ import PokemonItem from './PokemonItem';
 
 const ListPokemon = (props) => {
 
-    const pokemons = props.pokemons? props.pokemons: [];
+    let pokemons =  <PokemonItem />;
+
+    if(props.pokemons.length > 0) {
+        pokemons = props.pokemons.map(pokemon => {
+            return (
+                <PokemonItem key={pokemon.Number} 
+                            name={pokemon.Name} 
+                            img={pokemon.img} 
+                            types={pokemon.Types} 
+                            keyword={props.keyword}/>
+            )
+        });
+    }
 
     return (
         <ul className="suggestions">
-            {pokemons.map(pokemon => <PokemonItem key={pokemon.Number} name={pokemon.Name} img={pokemon.img} types={pokemon.Types} keyword={props.keyword}/>)}
+            {pokemons}
         </ul>
     );
 }
