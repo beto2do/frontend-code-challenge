@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import util from '../util';
 
 const PokemonController = (props) => {
@@ -6,6 +6,7 @@ const PokemonController = (props) => {
     const [pokemons, setPokemons] = useState([]);
     const [isMaxCP, setIsMaxCP] = useState(false);
     const [isLoading, setIsloading] = useState(true);
+    const refInput = useRef('');
 
     useEffect(() => {
         util.getPokemos().then(data => {
@@ -14,13 +15,18 @@ const PokemonController = (props) => {
         });
     }, []);
 
-    function handleInputChange(event) {
-        const keyword = event.target.value;
+    function getPokemons(keyword) {
         let filteredPokemons = util.filterByNameOrType(keyword, [...pokemons]);
         let sortedPokemons = isMaxCP ? util.sortByMaxCP(filteredPokemons): util.sortByNameAndType(keyword, filteredPokemons);
         if(sortedPokemons.length > 4) {
             sortedPokemons = sortedPokemons.slice(0,4);
         }
+        return sortedPokemons;
+    }
+
+    function handleInputChange(event) {
+        const keyword = event.target.value;
+        const sortedPokemons = getPokemons(keyword);
         props.onChange({
             pokemons: sortedPokemons,
             keyword: keyword
@@ -28,7 +34,13 @@ const PokemonController = (props) => {
     }
 
     function handleMaxCPToogle(event) {
+        const keyword = refInput.current.value;
+        const sortedPokemons = getPokemons(keyword);
         setIsMaxCP(event.target.checked);
+        props.onChange({
+            pokemons: sortedPokemons,
+            keyword: keyword
+        });
     }
 
     const loader = isLoading ? <div className="loader"></div>: '';
@@ -39,7 +51,7 @@ const PokemonController = (props) => {
                 Maximum Combat Points
             </small>
         </label>
-        <input type="text" className="input" placeholder="Pokemon or type" onChange={handleInputChange}/>
+        <input ref={refInput} type="text" className="input" placeholder="Pokemon or type" onChange={handleInputChange}/>
         {loader}
     </>;
 }
