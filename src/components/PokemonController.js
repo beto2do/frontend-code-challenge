@@ -4,6 +4,7 @@ import util from '../util';
 const PokemonController = (props) => {
 
     const [pokemons, setPokemons] = useState([]);
+    const [isMaxCP, setIsMaxCP] = useState(false);
 
     useEffect(() => {
         util.getPokemos().then(data => {
@@ -14,16 +15,20 @@ const PokemonController = (props) => {
     function handleInputChange(event) {
         const keyword = event.target.value;
         let filteredPokemons = util.filterByNameOrType(keyword, [...pokemons]);
-        let sortedPokemons = util.sortByNameAndType(keyword, filteredPokemons)
+        let sortedPokemons = isMaxCP ? util.sortByMaxCP(filteredPokemons): util.sortByNameAndType(keyword, filteredPokemons);
         if(sortedPokemons.length > 4) {
             sortedPokemons = sortedPokemons.slice(0,4);
         }
         props.onChange(sortedPokemons);
     }
 
+    function handleMaxCPToogle(event) {
+        setIsMaxCP(event.target.checked);
+    }
+
     return <>
         <label htmlFor="maxCP" className="max-cp">
-            <input type="checkbox" id="maxCP" />
+            <input type="checkbox" id="maxCP" onChange={handleMaxCPToogle}/>
             <small>
                 Maximum Combat Points
             </small>
