@@ -7,7 +7,7 @@ const ListPokemon = (props) => {
 
     return (
         <ul className="suggestions">
-            {pokemons.map(pokemon => <PokemonItem key={pokemon.Number} name={pokemon.Name} img={pokemon.img}/>)}
+            {pokemons.map(pokemon => <PokemonItem key={pokemon.Number} name={pokemon.Name} img={pokemon.img} types={pokemon.Types}/>)}
         </ul>
     );
 }

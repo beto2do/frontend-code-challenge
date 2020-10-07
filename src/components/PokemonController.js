@@ -12,7 +12,10 @@ const PokemonController = (props) => {
     }, []);
 
     function handleInputChange(event) {
-        const filteredPokemons = util.filterByNameOrType(event.target.value, [...pokemons]);
+        let filteredPokemons = util.filterByNameOrType(event.target.value, [...pokemons]);
+        if(filteredPokemons.length > 4) {
+            filteredPokemons = filteredPokemons.slice(0,4);
+        }
         props.onChange(filteredPokemons);
     }
 
