@@ -12,7 +12,8 @@ const PokemonController = (props) => {
     }, []);
 
     function handleInputChange(event) {
-        props.onChange(pokemons);
+        const filteredPokemons = util.filterByNameOrType(event.target.value, [...pokemons]);
+        props.onChange(filteredPokemons);
     }
 
     return <>
